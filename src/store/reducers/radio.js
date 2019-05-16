@@ -1,9 +1,10 @@
 import { REGISTER_RADIO_BEGIN, REGISTER_RADIO_SUCCESS, REGISTER_RADIO_FAILURE, SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE } from '../actions/actionTypes'
 
 const initialState = {
-  loading: false,
-  error: null,
-  searched: [],
+  playlist: [],   // user selected radios
+  loading: false, // loading something
+  error: null,    // error from server
+  searched: [],   // last search for radios
 }
 
 const reducer = (state = initialState, action) => {

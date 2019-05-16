@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, SafeAreaView, TextInput} from 'react-native';
-import { search } from '../store/actions/radio';
+import { StyleSheet, Text, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import Modal from "react-native-modal";
+
+import SearchRadio from '../components/SearchRadio';
 
 class Radio extends Component {
 
-  timeoutSearch = null;
+  state = {
+    searchVisible: false
+  };
 
   componentDidMount = () => {
-    
+
   }
 
   componentDidUpdate = prevProps => {
@@ -17,25 +21,20 @@ class Radio extends Component {
     }
   }
 
-  changeSearch(word) {
-    if (this.timeoutSearch) clearTimeout(this.timeoutSearch);
-    this.timeoutSearch = setTimeout(() => {
-      this.props.onSearch(word);
-    }, 500);
-  }
-
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <TextInput style={styles.input}
-              autoFocus={true}
-              onChangeText={searchWord => this.changeSearch(searchWord)} />
-          <Text>teste</Text>
-          {this.props.radio.searched.map(radio=> 
-            <View>
-              <Text>{radio.name}</Text>
-            </View>
-          )}
+        <Text>Sua Playlist</Text>
+
+        <TouchableOpacity onPress={()=> this.setState({searchVisible: true})} style={styles.buttom}>
+          <Text style={styles.buttomText}>Buscar</Text>
+        </TouchableOpacity>
+
+        <Modal isVisible={this.state.searchVisible} style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <SearchRadio/>
+          </View>
+        </Modal>
       </SafeAreaView>
     );
   }
@@ -43,11 +42,7 @@ class Radio extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    borderWidth: 2,
-    borderColor: 'red'
+    backgroundColor: '#F5FCFF'
   },
   input: {
     borderRadius: 4,
@@ -56,6 +51,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     height: 40,
     paddingLeft: 20
+  },
+  buttom: {
+    padding: 10,
+    backgroundColor: '#4286F4'
+  },
+  buttomText: {
+    fontSize: 20,
+    color: '#FFF',
+    textAlign: 'center'
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  modalContent: {
+    height: '40%',
+    width: '90%',
+    borderRadius: 10,
+
+    backgroundColor: '#fff'
   }
 });
 
@@ -68,7 +83,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSearch: word => dispatch(search(word))
+    
   }
 }
 
