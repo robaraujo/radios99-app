@@ -6,6 +6,7 @@ import Radio from './screens/Radio';
 import Profile from './screens/Profile';
 import Register from './screens/Register';
 import Login from './screens/Login';
+import Radios from './screens/Radios';
 
 const AuthStack = createStackNavigator(
   {
@@ -27,6 +28,8 @@ const AuthStack = createStackNavigator(
 );
 
 const MenuNavigator = createDrawerNavigator({
+  Radios: Radios,
+  Register: Register,
   Login: Login,
   Radio: Radio,
   Profile: Profile

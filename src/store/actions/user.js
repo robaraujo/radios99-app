@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { userConstants } from './actionTypes'
+import { AUTH_USER_BEGIN, AUTH_USER_SUCCESS, AUTH_USER_FAILURE, USERS_LOGOUT } from './actionTypes';
 import { setMsg } from './message';
 
 export const logout = () => {
   return {
-    type: USER_LOGGED_OUT
+    type: USERS_LOGOUT
   }
 }
 
@@ -18,15 +18,15 @@ export const authenticate = user => {
         })
         .catch(err => {
           dispatch(failure(err));
-          dispatch(setMsg('Falha login 1. ' + err.error))
+          dispatch(setMsg('Senha inválida. ' + err.error))
         });
     } catch (e) {
       dispatch(failure(e.message));
-      dispatch(setMsg('Falha login 2'))
+      dispatch(setMsg('Falha login'))
     }
   }
 
-  function request(user) { return { type: userConstants.AUTH_REQUEST, payload: user } }
-  function success(user) { return { type: userConstants.AUTH_SUCCESS, payload: user } }
-  function failure(error) { return { type: userConstants.AUTH_FAILURE, payload: error } }
+  function request(user) { return { type: AUTH_USER_BEGIN, payload: user } }
+  function success(user) { return { type: AUTH_USER_SUCCESS, payload: user } }
+  function failure(error) { return { type: AUTH_USER_FAILURE, payload: error } }
 }

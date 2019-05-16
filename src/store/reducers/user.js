@@ -1,5 +1,4 @@
-import { userConstants } from '../actions/actionTypes'
-import { AsyncStorage } from 'react-native';
+import { AUTH_USER_BEGIN, AUTH_USER_SUCCESS, AUTH_USER_FAILURE } from '../actions/actionTypes';
 
 const initialState = {
   loggedIn: false,
@@ -13,23 +12,20 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case userConstants.AUTH_REQUEST:
+    case AUTH_USER_BEGIN:
       return {
         ...state,
         loggingIn: true,
         user: action.payload
       };
-    case userConstants.AUTH_SUCCESS:
-      // save cache
-      AsyncStorage.setItem('user', JSON.stringify(action.payload.user));
-      AsyncStorage.setItem('token', action.payload.token);
+    case AUTH_USER_SUCCESS:
       return {
         ...state,
         loggedIn: true,
         user: action.payload.user,
         token: action.payload.token,
       };
-    case userConstants.AUTH_FAILURE:
+    case AUTH_USER_FAILURE:
       return {
         ...state,
         loggingIn: false,

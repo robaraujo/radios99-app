@@ -6,14 +6,11 @@ import AnimateLoadingButton from '../components/AnimatedButtom';
 
 class Login extends Component {
 
-
   state = {
     name: 'Temporario',
     email: '',
     password: ''
   }
-
-  
   
   _onPressHandler() {
     this.loadingButton.showLoading(true);
@@ -21,11 +18,10 @@ class Login extends Component {
   }
 
   componentDidUpdate = prevProps => {
-    console.log(this.props, prevProps)
     // success login
     if (this.props.user.loggedIn) {
-      this.props.navigation.navigate('Radio');
-      return this.loadingButton.success();
+      setTimeout(()=> this.loadingButton.success(), 200);
+      return setTimeout(()=> this.props.navigation.navigate('Radio'), 600);
     }
 
     // error login
@@ -34,8 +30,8 @@ class Login extends Component {
     }
   }
 
-  register = ()=> {
-    this.props.navigation.navigate('Register')
+  help = ()=> {
+    
   }
 
   render() {
@@ -66,7 +62,7 @@ class Login extends Component {
             <Text style={styles.linkText}>Suas Rádios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.register}>
+          <TouchableOpacity onPress={this.help}>
             <Text style={styles.linkText}>Ajuda?</Text>
           </TouchableOpacity>
         </View>

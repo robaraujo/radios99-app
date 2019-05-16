@@ -1,20 +1,26 @@
 import React from 'React';
-import { Provider } from 'react-redux'
 import { AppRegistry } from 'react-native';
-import axios from 'axios';
-import Reactotron from 'reactotron-react-native'
+
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react';
+import configureStore from './src/store/storeConfig';
+
 import App from './src/App';
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
+
+import axios from 'axios';
+import Reactotron from 'reactotron-react-native';
 
 Reactotron.configure().useReactNative().connect();
-
-import storeConfig from './src/store/storeConfig';
 axios.defaults.baseURL = 'http://localhost:3000';
 
-const store = storeConfig()
+const { store, persistor } = configureStore();
+
 const Redux = () => (
   <Provider store={store}>
-    <App/>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 )
 

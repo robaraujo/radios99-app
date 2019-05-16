@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Volume from '../components/Volume';
-import { radioUpdateState, radioUpdateInfo } from '../store/actions/radio';
+import { updateState, updateInfo } from '../store/actions/radio';
 
 class Radio extends Component {
 
@@ -109,7 +109,6 @@ class Radio extends Component {
                 size={20} color="#fff" />
             </TouchableOpacity>
           </View>
-
         </View>
         <Footer />
       </LinearGradient>
@@ -176,8 +175,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onUpdateState: playbackState => dispatch(radioUpdateState(playbackState)),
-    onUpdateInfo: info => dispatch(radioUpdateInfo(info)),
+    onUpdateState: playbackState => dispatch(updateState(playbackState)),
+    onUpdateInfo: info => dispatch(updateInfo(info)),
   }
 }
 

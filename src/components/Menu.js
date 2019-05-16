@@ -23,7 +23,7 @@ class Menu extends Component {
         navOptionThumb: 'image',
         navOptionName: 'Radio',
         screenToNavigate: 'Radio',
-      },{
+      }, {
         navOptionThumb: 'image',
         navOptionName: 'Cadastrar Rádio',
         screenToNavigate: 'FormRadio',
@@ -31,6 +31,8 @@ class Menu extends Component {
     ];
   }
   render() {
+    let user = this.props.user;
+
     let itemsMenu = this.items.map((item, key) => {
       if (this.showMenu(item.screenToNavigate)) {
         return <View
@@ -60,8 +62,25 @@ class Menu extends Component {
       }
     });
 
-    return (
-      <SafeAreaView style={styles.container}>
+    let header;
+    if (user.loggedIn) {
+      header = (
+        <TouchableOpacity style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
+          <View>
+            <Icon name='user' size={20} color="#808080" />
+          </View>
+          <View>
+            <Text>
+              {user.user.email}
+            </Text>
+            <Text>
+              Clique aqui
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )
+    } else {
+      header = (
         <TouchableOpacity style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
           <View>
             <Icon name='user' size={20} color="#808080" />
@@ -69,12 +88,18 @@ class Menu extends Component {
           <View>
             <Text>
               Entre e cadastre sua rádio!
-            </Text>
+          </Text>
             <Text>
               Clique aqui
-            </Text>
+          </Text>
           </View>
         </TouchableOpacity>
+      )
+    }
+
+    return (
+      <SafeAreaView style={styles.container}>
+        {header}
         <View
           style={{
             width: '100%',
