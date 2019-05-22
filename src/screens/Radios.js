@@ -9,7 +9,7 @@ import SearchRadio from '../components/SearchRadio';
 import AppHeader from '../components/AppHeader';
 import SortablePlaylist from '../components/SortablePlaylist';
 import { toggleSearch } from '../store/actions/radio';
-import { colors } from '../Theme';
+import appStyles, { colors } from '../Theme';
 import RegisterRadio from '../components/RegisterRadio';
 
 class Radio extends Component {
@@ -42,13 +42,13 @@ class Radio extends Component {
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <SortablePlaylist />
       </View>
-      <TouchableOpacity onPress={() => this.props.onToggleSearch(true)} style={styles.buttom}>
-        <Text style={styles.buttomText}>Buscar</Text>
+      <TouchableOpacity onPress={() => this.props.onToggleSearch(true)} style={appStyles.buttomFooter}>
+        <Text style={appStyles.buttomFooterText}>Buscar</Text>
       </TouchableOpacity>
     </View>
   );
 
-  registerRoute = () => (
+  registerRadioRoute = () => (
     <RegisterRadio />
   );
 
@@ -73,7 +73,7 @@ class Radio extends Component {
           navigationState={this.state}
           renderScene={SceneMap({
             first: this.playlistRoute,
-            second: user.token ? this.registerRoute : this.loginRoute,
+            second: user.token ? this.registerRadioRoute : this.loginRoute,
           })}
           onIndexChange={index => {console.log(index);this.setState({ index })}}
           initialLayout={{ width: Dimensions.get('window').width }}
@@ -110,15 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginVertical: 20
-  },
-  buttom: {
-    padding: 10,
-    backgroundColor: colors.primary
-  },
-  buttomText: {
-    fontSize: 20,
-    color: '#FFF',
-    textAlign: 'center'
   },
   modalContainer: {
     flex: 1,

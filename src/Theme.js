@@ -13,10 +13,16 @@ export const colors = {
 
 const appStyles = StyleSheet.create({
   
-  border: {
-    borderWidth: 2,
-    borderColor: 'green'
-  }
+  buttomFooter: {
+    height: 50,
+    padding: 10,
+    backgroundColor: colors.primary
+  },
+  buttomFooterText: {
+    fontSize: 20,
+    color: '#FFF',
+    textAlign: 'center'
+  },
 });
 
 export default appStyles;

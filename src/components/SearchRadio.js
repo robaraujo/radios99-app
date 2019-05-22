@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { ListItem, SearchBar, Header } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
@@ -54,6 +54,7 @@ class SearchRadio extends Component {
     return (
       <View style={styles.container}>
         <Header
+          containerStyle={styles.header}
           centerComponent={{ text: 'Buscar Rádio', style: { color: '#fff' } }}
           rightComponent={{ icon: 'close', color: '#fff', onPress: ()=> this.props.onToggleSearch(false) }}
         />
@@ -93,6 +94,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  header: {
+    paddingTop: 0,
+    height: Platform.select({
+      android: 56,
+      default: 44
+    })
+  },
   input: {
     borderRadius: 4,
     marginBottom: 10,
@@ -101,11 +109,11 @@ const styles = StyleSheet.create({
     height: 40,
     paddingLeft: 20
   },
-  buttom: {
+  button: {
     padding: 10,
     backgroundColor: '#4286F4'
   },
-  buttomText: {
+  buttonText: {
     fontSize: 20,
     color: '#FFF',
     textAlign: 'center'

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
-import Footer from '../components/Footer';
 import AppHeader from '../components/AppHeader';
-import Volume from '../components/Volume';
+import RadioSocial from '../components/RadioSocial';
+import RadioVolume from '../components/RadioVolume';
+import RadioControllers from '../components/RadioControllers';
+
 import { updateState, updateActual } from '../store/actions/radio';
 
 class Radio extends Component {
@@ -57,7 +58,6 @@ class Radio extends Component {
         });
       });
       
-
       TrackPlayer.updateOptions({
         stopWithApp: true,
         capabilities: [
@@ -70,75 +70,30 @@ class Radio extends Component {
     });
   }
 
-  playPause = async () => {
-    // prevent play before ready
-    if (!this.props.radio.playbackState) return;
-
-    if (!this.isPlaying()) {
-      TrackPlayer.play();
-    } else {
-      TrackPlayer.pause();
-    }
-  }
-
-  backward = () => {
-    console.log(this.props.radio.actual, this.props.radio.actualIndex)
-    TrackPlayer.skipToPrevious();
-  }
-
-  forward = () => {
-    TrackPlayer.skipToNext();
-  }
-
-  isPlaying = () => {
-    return this.props.radio.playbackState === TrackPlayer.STATE_PLAYING;
-  }
-
   render() {
     const { actual } = this.props.radio;
 
     return (
-      <LinearGradient colors={['#dc634e', '#cc4532', '#c33f3d']}>
+      <LinearGradient colors={['#dc634e', '#cc4532', '#c33f3d']} style={{ flex: 1 }}>
         <AppHeader title="TOCANDO DA PLAYLIST" subtitle={actual.name} logo="true" />
         <View style={styles.body}>
           <View style={styles.containerImage}>
             <Image style={styles.image} source={{ uri: actual ? actual.logo : '' }} />
           </View>
-          <Volume  />
-          <View style={styles.ctrlContainer}>
-            <TouchableOpacity onPress={this.backward} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
-              <Icon
-                name="backward"
-                size={20} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.playPause} style={[styles.ctrlBtn, styles.playPauseBtn]}>
-              <Icon
-                style={{ marginLeft: this.isPlaying() ? 0 : 8 }}
-                name={this.isPlaying() ? 'pause' : 'play'}
-                size={50} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.forward} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
-              <Icon
-                name="forward"
-                size={20} color="#fff" />
-            </TouchableOpacity>
-          </View>
+          <RadioVolume />
+          <RadioControllers />
         </View>
-        <Footer />
+        <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+          <RadioSocial />
+        </View>
       </LinearGradient>
     );
   }
 }
-var { width, height } = Dimensions.get('window')
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF'
-  },
   body: {
-    height: height - 60,
+    flex: 1,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center'
@@ -154,28 +109,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     width: '100%',
     height: '100%',
-  },
-  ctrlContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    maxHeight: 104
-  },
-  ctrlBtn: {
-    borderRadius: 100,
-    borderWidth: 2,
-    borderColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  playPauseBtn: {
-    width: 100,
-    height: 100
-  },
-  nextPrevBtn: {
-    width: 50,
-    height: 50,
-    marginTop: 25,
-    marginHorizontal: 10
   }
 });
 

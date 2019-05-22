@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { register } from '../store/actions/radio';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, Dimensions, Image, SafeAreaView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
+
+import appStyles from '../Theme';
 
 class RegisterRadio extends Component {
   static navigationOptions = {
@@ -28,9 +30,9 @@ class RegisterRadio extends Component {
   render() {
 
     return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <View style={styles.content}>
+      <View style={{ flex: 1 }} >
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <ScrollView style={styles.content}>
             <Text style={styles.label}>Nome da Rádio</Text>
             <TextInput style={styles.input}
               autoFocus={true} value={this.state.name}
@@ -67,46 +69,20 @@ class RegisterRadio extends Component {
             <TextInput style={styles.input}
               value={this.state.whatsapp}
               onChangeText={whatsapp => this.setState({ whatsapp })} />
-          </View>
-        </ScrollView>
-        <View>
-          <TouchableOpacity onPress={this.register} style={styles.buttom}>
-            <Text style={styles.buttomText}>Salvar</Text>
-          </TouchableOpacity>
+          </ScrollView>
         </View>
-      </SafeAreaView>
+        <TouchableOpacity onPress={this.register} style={appStyles.buttomFooter}>
+          <Text style={appStyles.buttomFooterText}>Salvar</Text>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 20,
-    width: '100%',
-    backgroundColor: '#FFF'
-  },
   content: {
-    paddingHorizontal: 20,
+    padding: 20,
     width: '100%'
-  },
-  imageContainer: {
-    height: Dimensions.get('window').width / 2,
-    backgroundColor: '#EEE',
-    marginTop: 10
-  },
-  image: {
-    width: '100%',
-    height: Dimensions.get('window').width / 2,
-    resizeMode: 'contain'
-  },
-  buttom: {
-    padding: 10,
-    backgroundColor: '#4286F4'
-  },
-  buttomText: {
-    fontSize: 20,
-    color: '#FFF',
-    textAlign: 'center'
   },
   label: {
     fontSize: 17

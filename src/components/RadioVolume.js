@@ -37,7 +37,6 @@ export default class Volume extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   volumeContainter: {
     flexDirection: 'row',

@@ -17,19 +17,19 @@ class Menu extends Component {
         navOptionName: 'Radio',
         screenToNavigate: 'Radio',
         separator: false,
-      },{
+      }, {
         navOptionThumb: 'image',
         navOptionName: 'Playlist',
         screenToNavigate: 'Radios',
         separator: false,
         params: { submenu: 0 }
-      },{
+      }, {
         navOptionThumb: 'image',
         navOptionName: 'Cadastrar Rádio',
         screenToNavigate: 'Radios',
         separator: false,
         params: { submenu: 1 }
-      },{
+      }, {
         navOptionThumb: 'image',
         navOptionName: 'Sair',
         screenToNavigate: 'Logout',
@@ -38,6 +38,9 @@ class Menu extends Component {
     ];
   }
 
+  /**
+   * Event menu item clicked
+   */
   itemClick = (item, key) => {
     this.props.navigation.closeDrawer();
 
@@ -50,86 +53,76 @@ class Menu extends Component {
     this.props.navigation.navigate(item.screenToNavigate, item.params);
   }
 
-  render() {
-    
-    let user = this.props.user;
+  /**
+   * Test if menu should be visible
+   */
+  showMenu(menu) {
+    const auth = ['Logout', 'FormRadio'];
+    return auth.indexOf(menu) !== -1 && !this.props.user.token ? false : true;
+  }
 
+  /**
+   * Render header different if user is logged
+   */
+  header = () => {
+    // logged
+    if (this.props.user.token) {
+      return <TouchableOpacity style={styles.header}>
+        <View>
+          <Icon name='user' size={20} color="#808080" />
+        </View>
+        <View>
+          <Text>
+            {this.props.user.name}
+          </Text>
+          <Text>
+            Clique aqui
+        </Text>
+        </View>
+      </TouchableOpacity>
+    }
+
+    // not logged
+    return <TouchableOpacity style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
+      <View>
+        <Icon name='user' size={20} color="#808080" />
+      </View>
+      <View>
+        <Text>
+          Entre e cadastre sua rádio!
+        </Text>
+        <Text>
+          Clique aqui
+        </Text>
+      </View>
+    </TouchableOpacity>
+  }
+
+  render() {
     let itemsMenu = this.items.map((item, key) => {
       if (this.showMenu(item.screenToNavigate)) {
-        return <View
+        return <TouchableOpacity
+          onPress={() => this.itemClick(item, key)}
           key={key}
-          style={[styles.menuItem, {backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff'}]}>
+          style={[styles.menuItem, { backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff' }]}>
           <View style={{ marginRight: 10, marginLeft: 20 }}>
             <Icon name={item.navOptionThumb} size={25} color="#808080" />
           </View>
-          <Text
-            style={{
-              fontSize: 15,
-              color: global.currentScreenIndex === key ? 'red' : 'black',
-            }}
-            onPress={() => this.itemClick(item, key)}>
+          <Text style={{ fontSize: 15, color: global.currentScreenIndex === key ? 'red' : 'black' }}>
             {item.navOptionName}
           </Text>
-        </View>
+        </TouchableOpacity>
       }
     });
 
-    let header;
-    if (user.token) {
-      header = (
-        <TouchableOpacity style={styles.header}>
-          <View>
-            <Icon name='user' size={20} color="#808080" />
-          </View>
-          <View>
-            <Text>
-              {user.user.email}
-            </Text>
-            <Text>
-              Clique aqui
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )
-    } else {
-      header = (
-        <TouchableOpacity style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
-          <View>
-            <Icon name='user' size={20} color="#808080" />
-          </View>
-          <View>
-            <Text>
-              Entre e cadastre sua rádio!
-          </Text>
-            <Text>
-              Clique aqui
-          </Text>
-          </View>
-        </TouchableOpacity>
-      )
-    }
-
     return (
       <SafeAreaView style={styles.container}>
-        {header}
-        <View
-          style={{
-            width: '100%',
-            height: 1,
-            backgroundColor: '#e2e2e2',
-            marginTop: 15,
-          }}
-        />
+        {this.header()}
         <View style={{ width: '100%' }}>
           {itemsMenu}
         </View>
       </SafeAreaView>
     );
-  }
-
-  showMenu(menu) {
-    const auth = ['Logout', 'FormRadio'];
-    return auth.indexOf(menu) !== -1 && !this.props.user.token ? false : true;
   }
 }
 const styles = StyleSheet.create({

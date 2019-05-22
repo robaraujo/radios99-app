@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default props => {
   return (
-    <View style={styles.footer}>
+    <View style={styles.social}>
       <TouchableOpacity style={styles.socialItem}>
         <Icon name="facebook" size={24} color="#c54134" />
       </TouchableOpacity>
@@ -22,7 +22,7 @@ export default props => {
 }
 
 const styles = StyleSheet.create({
-  footer: {
+  social: {
     height: 60,
     width: '100%',
     paddingHorizontal: 50,

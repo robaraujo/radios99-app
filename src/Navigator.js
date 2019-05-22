@@ -9,7 +9,7 @@ import Radios from './screens/Radios';
 
 const MenuNavigator = createDrawerNavigator({
   Radio: Radio,
-  Radios: Radios,
+  Radios: Radios, 
   RegisterRadio: RegisterRadio,
   Login: Login
 }, {

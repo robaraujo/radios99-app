@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Image, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { authenticate } from '../store/actions/user'
-import AnimateLoadingButton from '../components/AnimatedButtom';
+import AnimateLoadingButton from '../components/AnimatedButton';
 
 class Login extends Component {
 
