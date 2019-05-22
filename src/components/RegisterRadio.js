@@ -4,7 +4,7 @@ import { register } from '../store/actions/radio';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, Dimensions, Image, SafeAreaView } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 
-class Register extends Component {
+class RegisterRadio extends Component {
   static navigationOptions = {
     title: 'Nova Rádio',
   };
@@ -12,6 +12,8 @@ class Register extends Component {
   state = {
     name: '',
     streaming: null,
+    state: null,
+    city: null,
     logo: null,
     facebook: null,
     twitter: null,
@@ -21,21 +23,6 @@ class Register extends Component {
 
   register = () => {
     this.props.onRegister({ ...this.state });
-  }
-
-  componentDidUpdate = prevProps => {
-    if (prevProps.isLoading && !this.props.isLoading) {
-      this.setState({
-        name: '',
-        streaming: null,
-        logo: null,
-        facebook: null,
-        twitter: null,
-        whatsapp: null,
-        instagram: null
-      })
-      this.props.navigation.navigate('Profile')
-    }
   }
 
   render() {
@@ -52,13 +39,18 @@ class Register extends Component {
             <TextInput style={styles.input}
               value={this.state.streaming}
               onChangeText={streaming => this.setState({ streaming })} />
+            <Text style={styles.label}>Cidade</Text>
+            <TextInput style={styles.input}
+              autoFocus={true} value={this.state.city}
+              onChangeText={city => this.setState({ city })} />
+            <Text style={styles.label}>Estado</Text>
+            <TextInput style={styles.input}
+              autoFocus={true} value={this.state.state}
+              onChangeText={state => this.setState({ state })} />
             <Text style={styles.label}>Logomarca</Text>
-            <View style={styles.imageContainer}>
-              <Image source={this.state.image} style={styles.image} />
-            </View>
-            <TouchableOpacity onPress={this.pickImage} style={[styles.buttom, { marginBottom: 10 }]}>
-              <Text style={styles.buttomText}>Escolha a foto</Text>
-            </TouchableOpacity>
+            <TextInput style={styles.input}
+              autoFocus={true} value={this.state.logo}
+              onChangeText={logo => this.setState({ logo })} />
             <Text style={styles.label}>Facebook</Text>
             <TextInput style={styles.input}
               value={this.state.facebook}
@@ -141,4 +133,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterRadio)

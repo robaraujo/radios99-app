@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 
 import userReducer from './reducers/user';
 import radioReducer from './reducers/radio';
-import messageReducer from './reducers/message'
+import messageReducer from './reducers/message';
 
 const reducers = {
   user: userReducer,
@@ -17,7 +17,7 @@ const reducers = {
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: []
+  whitelist: ['radio', 'user']
 };
 const persistedReducer = persistCombineReducers(persistConfig, reducers);
 

@@ -6,23 +6,29 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import AppHeader from '../components/AppHeader';
 import Volume from '../components/Volume';
-import { updateState, updateInfo } from '../store/actions/radio';
+import { updateState, updateActual } from '../store/actions/radio';
 
 class Radio extends Component {
+  
+  componentWillMount = () => {
+    if (!this.props.radio.list.length) {
+      this.props.navigation.navigate('Radios');
+    }
+  }
 
   componentDidMount = () => {
+    // first time, set radio 0 to be actual
+    if (!this.props.radio.actual) {
+      this.props.onUpdateActual(0);
+    }
 
     TrackPlayer.registerEventHandler(async (data) => {
       if (data.type === 'playback-track-changed') {
         if (data.nextTrack) {
           const track = await TrackPlayer.getTrack(data.nextTrack);
-          this.props.onUpdateInfo({
-            title: track.title,
-            artist: track.artist,
-            artwork: track.artwork
-          });
+          this.props.onUpdateActual(track.id);
         }
       } else if (data.type == 'remote-play') {
         TrackPlayer.play()
@@ -41,27 +47,24 @@ class Radio extends Component {
     TrackPlayer.setupPlayer().then(async () => {
 
       // Adds a track to the queue
-      TrackPlayer.add({
-        id: 1,
-        url: 'http://www.somdomato.com/stream?type=http',
-        title: '99 Rádios',
-        artist: 'Som do Mato',
-        artwork: require('../../assets/cover.png')
+      this.props.radio.list.map((radio, i)=> {
+        TrackPlayer.add({
+          id: i,
+          url: radio.streaming,
+          title: '99Rádios - ' + (i+1) + ')' + radio.name,
+          artist: radio.name,
+          artwork: require('../../assets/cover.png')
+        });
       });
-
-      TrackPlayer.add({
-        id: 2,
-        url: 'http://www.somdomato.com/stream?type=http',
-        title: '99 Rádios 2',
-        artist: 'Som do Mato 2',
-        artwork: require('../../assets/cover.png')
-      });
+      
 
       TrackPlayer.updateOptions({
         stopWithApp: true,
         capabilities: [
           TrackPlayer.CAPABILITY_PLAY,
-          TrackPlayer.CAPABILITY_PAUSE
+          TrackPlayer.CAPABILITY_PAUSE,
+          TrackPlayer.CAPABILITY_SKIP_TO_PREVIOUS,
+          TrackPlayer.CAPABILITY_SKIP_TO_NEXT
         ]
       });
     });
@@ -78,21 +81,32 @@ class Radio extends Component {
     }
   }
 
+  backward = () => {
+    console.log(this.props.radio.actual, this.props.radio.actualIndex)
+    TrackPlayer.skipToPrevious();
+  }
+
+  forward = () => {
+    TrackPlayer.skipToNext();
+  }
+
   isPlaying = () => {
     return this.props.radio.playbackState === TrackPlayer.STATE_PLAYING;
   }
 
   render() {
+    const { actual } = this.props.radio;
+
     return (
-      <LinearGradient colors={['#dc634e', '#cc4532', '#c33f3d']} style={styles.container}>
-        <Header navigation={this.props.navigation} />
+      <LinearGradient colors={['#dc634e', '#cc4532', '#c33f3d']}>
+        <AppHeader title="TOCANDO DA PLAYLIST" subtitle={actual.name} logo="true" />
         <View style={styles.body}>
           <View style={styles.containerImage}>
-            <Image style={styles.image} source={require('../../assets/cover.png')} />
+            <Image style={styles.image} source={{ uri: actual ? actual.logo : '' }} />
           </View>
-          <Volume />
+          <Volume  />
           <View style={styles.ctrlContainer}>
-            <TouchableOpacity onPress={this.playPause} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
+            <TouchableOpacity onPress={this.backward} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
               <Icon
                 name="backward"
                 size={20} color="#fff" />
@@ -103,7 +117,7 @@ class Radio extends Component {
                 name={this.isPlaying() ? 'pause' : 'play'}
                 size={50} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.playPause} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
+            <TouchableOpacity onPress={this.forward} style={[styles.ctrlBtn, styles.nextPrevBtn]}>
               <Icon
                 name="forward"
                 size={20} color="#fff" />
@@ -131,7 +145,6 @@ const styles = StyleSheet.create({
   },
   containerImage: {
     padding: 20,
-    margin: '8%',
     width: '84%',
     height: Dimensions.get('window').width * 4 / 5,
     borderWidth: 2,
@@ -168,15 +181,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    radio: state.radio,
-    user: state.user
+    user: state.user,
+    radio: state.radio
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onUpdateState: playbackState => dispatch(updateState(playbackState)),
-    onUpdateInfo: info => dispatch(updateInfo(info)),
+    onUpdateActual: radioIndex => dispatch(updateActual(radioIndex))
   }
 }
 

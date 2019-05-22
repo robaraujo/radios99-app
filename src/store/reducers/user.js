@@ -1,7 +1,6 @@
-import { AUTH_USER_BEGIN, AUTH_USER_SUCCESS, AUTH_USER_FAILURE } from '../actions/actionTypes';
+import { AUTH_USER_BEGIN, AUTH_USER_SUCCESS, AUTH_USER_FAILURE, USERS_LOGOUT } from '../actions/actionTypes';
 
 const initialState = {
-  loggedIn: false,
   loggingIn: false,
   token: null,
   user: {
@@ -21,7 +20,6 @@ const reducer = (state = initialState, action) => {
     case AUTH_USER_SUCCESS:
       return {
         ...state,
-        loggedIn: true,
         user: action.payload.user,
         token: action.payload.token,
       };
@@ -29,11 +27,14 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loggingIn: false,
-        loggedIn: false,
+        token: null,
         user: action.user,
       };
+    case USERS_LOGOUT:
+      console.log(initialState)
+      return initialState;
     default:
-      return state
+      return state;
   }
 }
 

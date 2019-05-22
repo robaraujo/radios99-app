@@ -3,9 +3,52 @@ import { setMsg } from './message';
 
 import { 
   REGISTER_RADIO_BEGIN, REGISTER_RADIO_SUCCESS, REGISTER_RADIO_FAILURE, 
-  SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE 
+  SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE,
+  TOGGLE_RADIO_SEARCH, ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_ACTUAL, 
+  UPDATE_RADIO_STATE
 } from './actionTypes';
 
+// show or hide radio search
+export const toggleSearch = showHide => {
+  return {
+    type: TOGGLE_RADIO_SEARCH,
+    payload: showHide
+  };
+};
+
+// update playing state
+export const updateState = playbackState => {
+  return {
+    type: UPDATE_RADIO_STATE,
+    payload: playbackState
+  }
+};
+
+// update index of player radio
+export const updateActual = actualIndex => {
+  return {
+    type: UPDATE_RADIO_ACTUAL,
+    payload: actualIndex
+  }
+};
+
+// add radio to playlist
+export const addToPlaylist = radio => {
+  return {
+    type: ADD_RADIO_LIST,
+    payload: radio
+  };
+};
+
+// remove radio from playlist
+export const removeFromPlaylist = radio => {
+  return {
+    type: REMOVE_RADIO_LIST,
+    payload: radio
+  };
+};
+
+// register radio
 export const register = radio => {
   return dispatch => {
     try {
@@ -29,6 +72,7 @@ export const register = radio => {
   function failure(error) { return { type: REGISTER_RADIO_FAILURE, payload: error } }
 }
 
+// search radios on server
 export const search = word => {
   return dispatch => {
     try {

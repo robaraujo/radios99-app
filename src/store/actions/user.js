@@ -11,16 +11,20 @@ export const logout = () => {
 export const authenticate = user => {
   return dispatch => {
     try {
+      console.log(user)
       dispatch(request(user));
       axios.post('/auth/authenticate', user)
         .then(res => {
+          console.log(res)
           dispatch(success(res.data));
         })
         .catch(err => {
+          console.log(err)
           dispatch(failure(err));
           dispatch(setMsg('Senha inválida. ' + err.error))
         });
     } catch (e) {
+      console.log(e)
       dispatch(failure(e.message));
       dispatch(setMsg('Falha login'))
     }

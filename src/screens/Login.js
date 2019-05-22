@@ -8,26 +8,34 @@ class Login extends Component {
 
   state = {
     name: 'Temporario',
-    email: '',
-    password: ''
+    email: 'Teste',
+    password: 'teste'
   }
-  
-  _onPressHandler() {
-    this.loadingButton.showLoading(true);
-    this.props.onAuthenticate({ ...this.state });
+
+  componentWillMount = () => {
+    console.log('componentWillMount', this.props.user.token)
+    if (this.props.user.token) {
+      return this.props.navigation.resetTo('Radio');
+    }
   }
 
   componentDidUpdate = prevProps => {
     // success login
-    if (this.props.user.loggedIn) {
-      setTimeout(()=> this.loadingButton.success(), 200);
-      return setTimeout(()=> this.props.navigation.navigate('Radio'), 600);
+    console.log(this.props)
+    if (this.props.user.token) {
+      this.loadingButton.success();
+      return setTimeout(()=> this.props.navigation.navigate('Radio'), 700);
     }
 
     // error login
     if (!this.props.user.loggingIn && prevProps.user.loggingIn) {
       this.loadingButton.showLoading(false);
     }
+  }
+
+  _onPressHandler() {
+    this.loadingButton.showLoading(true);
+    this.props.onAuthenticate({ ...this.state });
   }
 
   help = ()=> {
@@ -58,7 +66,7 @@ class Login extends Component {
           onPress={this._onPressHandler.bind(this)}
         />
         <View style={styles.containerLinks}>
-          <TouchableOpacity onPress={this.register}>
+          <TouchableOpacity onPress={()=> this.props.navigation.navigate('Radios', {submenu: 0})}>
             <Text style={styles.linkText}>Suas Rádios</Text>
           </TouchableOpacity>
 

@@ -3,36 +3,15 @@ import { createDrawerNavigator, createAppContainer, createStackNavigator } from 
 
 import Menu from './components/Menu';
 import Radio from './screens/Radio';
-import Profile from './screens/Profile';
-import Register from './screens/Register';
+import RegisterRadio from './components/RegisterRadio';
 import Login from './screens/Login';
 import Radios from './screens/Radios';
 
-const AuthStack = createStackNavigator(
-  {
-    Login: Login,
-    Register: Register,
-  },
-  {
-    initialRouteName: 'Login',
-    defaultNavigationOptions: {
-      headerStyle: {
-        backgroundColor: '#f4511e',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-    },
-  }
-);
-
 const MenuNavigator = createDrawerNavigator({
-  Radios: Radios,
-  Register: Register,
-  Login: Login,
   Radio: Radio,
-  Profile: Profile
+  Radios: Radios,
+  RegisterRadio: RegisterRadio,
+  Login: Login
 }, {
     contentComponent: Menu,
     drawerPosition: 'right',

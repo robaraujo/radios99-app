@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Slider from '@react-native-community/slider';
 import TrackPlayer from 'react-native-track-player';
+import { Slider } from 'react-native-elements';
 
 export default class Volume extends Component {
   setVolume = volume => {
@@ -20,8 +20,9 @@ export default class Volume extends Component {
         />
         <Slider
           style={styles.volumeSlider}
-          minimumTrackTintColor={'black'}
-          maximumTrackTintColor={'#4e4e4e'}
+          minimumTrackTintColor='#000'
+          maximumTrackTintColor="#2b2b2b"
+          thumbTintColor="#000"
           value={1}
           step={0.1}
           onValueChange={(value) => this.setVolume(value)} />
@@ -41,14 +42,13 @@ const styles = StyleSheet.create({
   volumeContainter: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20
+    margin: 20
   },
   volumeIcon: {
     paddingTop: 5
   },
   volumeSlider: {
     width: '80%',
-    textAlign: 'center',
     marginHorizontal: 10
   },
 });

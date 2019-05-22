@@ -64,10 +64,23 @@ export default class Component extends React.PureComponent {
     const scale = Dimensions.get('window').height / this.props.height;
     this.loadingOverlay.scale.setValue(0);
     
+    // grow overlay
     Animated.timing(this.loadingOverlay.scale, {
       toValue: scale * 2,
-      duration: 500
+      duration: 700
     }).start();
+
+    // reset loading spinner
+    this.showLoading(false);
+
+    // reset overlay after 1000s
+    setTimeout(()=> {
+      Animated.timing(this.loadingOverlay.scale, {
+        toValue: 0,
+        duration: 500,
+      }).start();
+    }, 1000);
+    
   }
 
   _loadingAnimation(widthStart, widthEnd, borderRadiusStart, borderRadiusEnd, opacityStart, opacityEnd) {
