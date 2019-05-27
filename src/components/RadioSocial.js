@@ -23,7 +23,7 @@ export default props => {
 
 const styles = StyleSheet.create({
   social: {
-    height: 60,
+    height: 50,
     width: '100%',
     paddingHorizontal: 50,
     flexDirection: 'row',

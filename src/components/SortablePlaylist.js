@@ -17,7 +17,7 @@ import { removeFromPlaylist } from '../store/actions/radio';
 const window = Dimensions.get('window');
 
 class SortablePlaylist extends Component {
-  
+
   remove = item => {
     console.log(item);
     this.props.onRemoveFromPlaylist(item);
@@ -27,17 +27,23 @@ class SortablePlaylist extends Component {
     const data = this.props.radio.list;
     return (
       <View style={styles.container}>
-        <SortableList
-          style={styles.list}
-          contentContainerStyle={styles.contentContainer}
-          data={data}
-          renderRow={this._renderRow} />
+        {!data.length ?
+          <Text style={styles.noRadio}>
+            Você ainda não buscou nenhuma rádio, clique no botão abaixo para começar.
+          </Text>
+          :
+          <SortableList
+            style={styles.list}
+            contentContainerStyle={styles.contentContainer}
+            data={data}
+            renderRow={this._renderRow} />
+        }
       </View>
     );
   }
 
-  _renderRow = ({data, active, index}) => {
-    return <Row data={data} active={active} index={index} remove={item=> this.remove(item)}/>
+  _renderRow = ({ data, active, index }) => {
+    return <Row data={data} active={active} index={index} remove={item => this.remove(item)} />
   }
 }
 
@@ -46,7 +52,7 @@ class Row extends Component {
   constructor(props) {
     super(props);
     this._active = new Animated.Value(0);
-    
+
     this._style = {
       ...Platform.select({
         ios: {
@@ -89,18 +95,18 @@ class Row extends Component {
   }
 
   render() {
-   const {data, index} = this.props;
+    const { data, index } = this.props;
 
     return (
       <Animated.View style={[
         styles.row,
         this._style,
       ]}>
-        <Text style={styles.index}>{index+1}</Text>
-        <Image source={{uri: data.logo}} style={styles.image} />
+        <Text style={styles.index}>{index + 1}</Text>
+        <Image source={{ uri: data.logo }} style={styles.image} />
         <Text style={styles.text}>{data.name}</Text>
         <Text style={styles.description}>{data.description}</Text>
-        <Icon style={styles.closeBtn} name="remove" size={20} color="#dadada" onPress={()=> this.props.remove(data)}/>
+        <Icon style={styles.closeBtn} name="remove" size={20} color="#dadada" onPress={() => this.props.remove(data)} />
       </Animated.View>
     );
   }
@@ -119,7 +125,12 @@ const styles = StyleSheet.create({
       },
     }),
   },
-
+  noRadio: {
+    color: '#5a5a5a',
+    textAlign: 'center',
+    fontSize: 17,
+    padding: 15
+  },
   title: {
     fontSize: 20,
     paddingVertical: 20,
@@ -161,7 +172,7 @@ const styles = StyleSheet.create({
         width: window.width - 30 * 2,
         shadowColor: 'rgba(0,0,0,0.2)',
         shadowOpacity: 1,
-        shadowOffset: {height: 2, width: 2},
+        shadowOffset: { height: 2, width: 2 },
         shadowRadius: 2,
       },
 

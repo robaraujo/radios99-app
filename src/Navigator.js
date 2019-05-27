@@ -1,13 +1,15 @@
 import React from 'react'
-import { createDrawerNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
+import { createDrawerNavigator, createAppContainer } from 'react-navigation'
 
 import Menu from './components/Menu';
 import Radio from './screens/Radio';
 import RegisterRadio from './components/RegisterRadio';
 import Login from './screens/Login';
 import Radios from './screens/Radios';
+import Intro from './screens/Intro';
 
 const MenuNavigator = createDrawerNavigator({
+  Intro: Intro,
   Radio: Radio,
   Radios: Radios, 
   RegisterRadio: RegisterRadio,

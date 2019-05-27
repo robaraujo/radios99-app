@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, TouchableOpacity, View, Dimensions } from 'react-native';
 import Modal from "react-native-modal";
-import { ButtonGroup, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 
 import SearchRadio from '../components/SearchRadio';

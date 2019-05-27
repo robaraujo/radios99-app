@@ -2,6 +2,7 @@
 export const SET_MESSAGE = 'SET_MESSAGE';
 
 // RADIO
+export const START_RADIO = 'START_RADIO';
 export const UPDATE_RADIO_STATE = 'UPDATE_RADIO_STATE';
 export const ADD_RADIO_LIST = 'ADD_RADIO_LIST';
 export const REMOVE_RADIO_LIST = 'REMOVE_RADIO_LIST';

@@ -5,8 +5,15 @@ import {
   REGISTER_RADIO_BEGIN, REGISTER_RADIO_SUCCESS, REGISTER_RADIO_FAILURE, 
   SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE,
   TOGGLE_RADIO_SEARCH, ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_ACTUAL, 
-  UPDATE_RADIO_STATE
+  UPDATE_RADIO_STATE, START_RADIO
 } from './actionTypes';
+
+// show or hide radio search
+export const start = () => {
+  return {
+    type: START_RADIO
+  };
+};
 
 // show or hide radio search
 export const toggleSearch = showHide => {

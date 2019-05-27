@@ -1,10 +1,12 @@
 import {
   REGISTER_RADIO_BEGIN, REGISTER_RADIO_SUCCESS, REGISTER_RADIO_FAILURE,
   SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE,
-  TOGGLE_RADIO_SEARCH, ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_STATE, UPDATE_RADIO_ACTUAL
+  TOGGLE_RADIO_SEARCH, ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_STATE,
+  UPDATE_RADIO_ACTUAL, START_RADIO
 } from '../actions/actionTypes';
 
 const initialState = {
+  firstScreen: '',       // first screen to open
   loading: false,       // loading something
   error: null,          // error from server
   searchVisible: false, // if show search modal radio
@@ -17,6 +19,17 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case START_RADIO:
+      state.firstScreen = 'Radios';
+      if (state.list.length) {
+        state.firstScreen = 'Radio';
+
+        if (!state.actual) {
+          state.actualIndex = 0;
+          state.actual = state.list[0];
+        }
+      }
+      return state;
     case REGISTER_RADIO_BEGIN:
       return {
         ...state,
@@ -66,10 +79,18 @@ const reducer = (state = initialState, action) => {
         playbackState: action.payload
       };
     case ADD_RADIO_LIST:
-      return {
+      let newState = {
         ...state,
         list: state.list.concat(action.payload)
       };
+
+      // if first radio add as actual
+      if (newState.list.length === 1) {
+        newState.actualIndex = 0;
+        newState.actual = action.payload;
+      }
+
+      return newState;
     case REMOVE_RADIO_LIST:
       return {
         ...state,
@@ -78,7 +99,6 @@ const reducer = (state = initialState, action) => {
         })
       };
     case UPDATE_RADIO_ACTUAL:
-      console.log(state.list, action.payload)
       return {
         ...state,
         actualIndex: action.payload,

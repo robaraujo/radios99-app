@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Image, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Platform } from 'react-native';
 import { Header } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { colors } from '../Theme';
@@ -21,16 +21,23 @@ class AppHeader extends Component
   render() {
     return (
       <Header
+        statusBarProps={{ translucent: true }}
         backgroundColor={colors.primary}
         centerComponent={this.centerElem}
         rightComponent={{ icon: 'menu', color: '#fff', onPress: ()=> this.props.navigation.toggleDrawer() }}
-        containerStyle={{ borderBottomWidth:0 }}
+        containerStyle={styles.containerStyle}
       />
     )
   }
 }
 
 const styles = StyleSheet.create({
+  containerStyle: {
+    ...Platform.select({
+      android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : {},
+    }),
+    borderBottomWidth: 0
+  },
   title: {
     color: '#fff',
     textAlign: 'center',

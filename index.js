@@ -1,5 +1,6 @@
 import React from 'React';
 import { AppRegistry } from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
@@ -26,3 +27,4 @@ const Redux = () => (
 
 console.disableYellowBox = true;
 AppRegistry.registerComponent(appName, () => Redux);
+TrackPlayer.registerPlaybackService(() => require('./src/RadioService.js'));
