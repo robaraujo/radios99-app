@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { register } from '../store/actions/radio';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import appStyles from '../Theme';
+import AppHeader from '../components/AppHeader';
+import appStyles, { colors } from '../Theme';
 
 class RegisterRadio extends Component {
   static navigationOptions = {
@@ -28,9 +29,9 @@ class RegisterRadio extends Component {
   }
 
   render() {
-
     return (
-      <View style={{ flex: 1 }} >
+      <View style={styles.container}>
+        <AppHeader hasBack={true} title="Registrando Rádio" />
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <ScrollView style={styles.content}>
             <Text style={styles.label}>Nome da Rádio</Text>
@@ -80,6 +81,10 @@ class RegisterRadio extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5FCFF'
+  },
   content: {
     padding: 20,
     width: '100%'
@@ -97,9 +102,10 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = state => {
   return {
-    isLoading: user.isLoading
+    radio: state.radio,
+    user: state.user
   }
 }
 

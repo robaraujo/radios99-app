@@ -1,18 +1,33 @@
 import React from 'react'
-import { createDrawerNavigator, createAppContainer } from 'react-navigation'
+import { createDrawerNavigator, createSwitchNavigator, createAppContainer } from 'react-navigation'
 
 import Menu from './components/Menu';
 import Radio from './screens/Radio';
-import RegisterRadio from './components/RegisterRadio';
+import RadioRegister from './screens/RadioRegister';
+import RadiosRegistered from './screens/RadiosRegistered';
 import Login from './screens/Login';
-import Radios from './screens/Radios';
+import Playlist from './screens/Playlist';
+import RadioSearch from './screens/RadioSearch';
 import Intro from './screens/Intro';
 
+const PlaylistSwitch = createSwitchNavigator({
+  Playlist: Playlist,
+  RadioSearch: RadioSearch,
+}, {
+  backBehavior: 'initialRoute'
+});
+const RegisterSwitch = createSwitchNavigator({
+  RadiosRegistered: RadiosRegistered,
+  RadioRegister: RadioRegister
+}, {
+  backBehavior: 'initialRoute'
+});
+
 const MenuNavigator = createDrawerNavigator({
+  Register: RegisterSwitch,
+  Playlist: PlaylistSwitch,
   Intro: Intro,
   Radio: Radio,
-  Radios: Radios, 
-  RegisterRadio: RegisterRadio,
   Login: Login
 }, {
     contentComponent: Menu,
@@ -26,7 +41,7 @@ const MenuNavigator = createDrawerNavigator({
         fontWeight: 'bold',
       },
     },
-});
+  });
 
 const App = createAppContainer(MenuNavigator)
 export default App

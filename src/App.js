@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { connect } from 'react-redux';
 import TrackPlayer from 'react-native-track-player';
+import axios from 'axios';
+
 import Navigator from './Navigator';
 import { setMsg } from './store/actions/message';
 import { updateState, updateActual, start } from './store/actions/radio';
@@ -63,6 +65,8 @@ class App extends Component {
         ]
       });
     });
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${this.props.user.token}`; 
   }
 
   componentDidUpdate = () => {
@@ -97,7 +101,8 @@ const mapStateToProps = state => {
   return {
     title: state.message.title,
     text: state.message.text,
-    radio: state.radio
+    radio: state.radio,
+    user: state.user,
   };
 }
 

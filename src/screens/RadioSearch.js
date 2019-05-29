@@ -5,7 +5,8 @@ import { ListItem, SearchBar, Header } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import TrackPlayer from 'react-native-track-player';
 
-import { search, addToPlaylist, toggleSearch } from '../store/actions/radio';
+import AppHeader from '../components/AppHeader';
+import { search, addToPlaylist } from '../store/actions/radio';
 
 class SearchRadio extends Component {
 
@@ -34,7 +35,7 @@ class SearchRadio extends Component {
     // add radio to playlist
     this.props.onAddToPlaylist(radio);
     // close search
-    setTimeout(()=> this.props.onToggleSearch(false), 200);
+    this.props.navigation.goBack();
   }
 
   /**
@@ -53,11 +54,7 @@ class SearchRadio extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          containerStyle={styles.header}
-          centerComponent={{ text: 'Buscar Rádio', style: { color: '#fff' } }}
-          rightComponent={{ icon: 'close', color: '#fff', onPress: ()=> this.props.onToggleSearch(false) }}
-        />
+        <AppHeader hasBack={true} title="Buscar Rádio" />
         <SearchBar
           containerStyle={{ borderWidth: 0 }}
           lightTheme={true}
@@ -94,13 +91,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  header: {
-    paddingTop: 0,
-    height: Platform.select({
-      android: 56,
-      default: 44
-    })
-  },
   input: {
     borderRadius: 4,
     marginBottom: 10,
@@ -130,7 +120,6 @@ const mapDispatchToProps = dispatch => {
   return {
     onSearch: word => dispatch(search(word)),
     onAddToPlaylist: radio => dispatch(addToPlaylist(radio)),
-    onToggleSearch: showHide => dispatch(toggleSearch(showHide))
   }
 }
 

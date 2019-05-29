@@ -20,15 +20,14 @@ class Menu extends Component {
       }, {
         navOptionThumb: 'image',
         navOptionName: 'Playlist',
-        screenToNavigate: 'Radios',
-        separator: false,
-        params: { submenu: 0 }
+        screenToNavigate: 'Playlist',
+        separator: false
       }, {
         navOptionThumb: 'image',
         navOptionName: 'Cadastrar Rádio',
-        screenToNavigate: 'Radios',
+        screenToNavigate: 'Register',
         separator: false,
-        params: { submenu: 1 }
+        //params: { submenu: 1 }
       }, {
         navOptionThumb: 'image',
         navOptionName: 'Sair',

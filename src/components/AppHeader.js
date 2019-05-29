@@ -6,6 +6,7 @@ import { colors } from '../Theme';
 
 class AppHeader extends Component
 {  
+
   centerElem = () => {
     if (this.props.title && this.props.subtitle) {
       return <View>
@@ -24,6 +25,11 @@ class AppHeader extends Component
         statusBarProps={{ translucent: true }}
         backgroundColor={colors.primary}
         centerComponent={this.centerElem}
+        leftComponent={
+          this.props.hasBack ?
+            { icon: 'chevron-left', color: '#fff', onPress: ()=> this.props.navigation.goBack() }
+            : null
+        }
         rightComponent={{ icon: 'menu', color: '#fff', onPress: ()=> this.props.navigation.toggleDrawer() }}
         containerStyle={styles.containerStyle}
       />
