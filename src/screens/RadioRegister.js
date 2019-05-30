@@ -1,38 +1,84 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { register } from '../store/actions/radio';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Alert, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Button } from 'react-native-elements';
+
+import { create, update, remove } from '../store/actions/radio';
+import appStyles, { colors } from '../Theme';
 
 import AppHeader from '../components/AppHeader';
-import appStyles, { colors } from '../Theme';
+import LoadingOverlay from '../components/LoadingOverlay';
+
 
 class RegisterRadio extends Component {
   static navigationOptions = {
     title: 'Nova Rádio',
   };
 
-  state = {
-    name: '',
-    streaming: null,
-    state: null,
-    city: null,
-    logo: null,
-    facebook: null,
-    twitter: null,
-    whatsapp: null,
-    instagram: null
-  };
+  constructor(props) {
+    super(props);
+    // is editing some radio?
+    let radio = this.props.navigation.getParam('radio', {});
 
-  register = () => {
-    this.props.onRegister({ ...this.state });
+    this.state = {
+      name: 'Teste',
+      streaming: 'teste streaming',
+      state: 'RS',
+      city: 'POA',
+      logo: 'teste',
+      facebook: 'face',
+      twitter: null,
+      whatsapp: null,
+      instagram: null,
+      ...radio
+    };
+  }
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.radio.loading && !this.props.radio.loading && !this.props.radio.error) {
+      this.props.navigation.goBack()
+    }
+  }
+
+  /**
+   * Return if is editing instead of registering
+   */
+  isEditing = () => {
+    return this.state._id;
+  }
+
+  /**
+   * Submit form of radio
+   */
+  submit = () => {
+    if (this.isEditing()) {
+      this.props.onUpdate({ ...this.state });
+    } else {
+      this.props.onCreate({ ...this.state });
+    }
+  }
+
+  remove = () => {
+    Alert.alert(
+      'Remover Rádio',
+      'Deseja realmente remover esta rádio? Ninguém mais poderá ouvi-la.',
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel remove')},
+        {text: 'Remover', onPress: () => this.props.onRemove( this.state._id )},
+      ]
+    );
   }
 
   render() {
+
     return (
       <View style={styles.container}>
-        <AppHeader hasBack={true} title="Registrando Rádio" />
+        <AppHeader 
+          right={this.isEditing() ? {icon: 'delete', onPress: this.remove} : false}
+          hasBack={true} title={(this.isEditing() ? 'Editando' : 'Registrando')+' Rádio'} />
         <View style={{ flex: 1, flexDirection: 'row' }}>
+          <LoadingOverlay message={this.props.radio.loading}/>
           <ScrollView style={styles.content}>
             <Text style={styles.label}>Nome da Rádio</Text>
             <TextInput style={styles.input}
@@ -72,9 +118,13 @@ class RegisterRadio extends Component {
               onChangeText={whatsapp => this.setState({ whatsapp })} />
           </ScrollView>
         </View>
-        <TouchableOpacity onPress={this.register} style={appStyles.buttomFooter}>
-          <Text style={appStyles.buttomFooterText}>Salvar</Text>
-        </TouchableOpacity>
+        <Button
+          buttonStyle={appStyles.buttomFooter}
+          disabled={!!this.props.radio.loading}
+          onPress={this.submit}
+          title="Salvar"
+          loading={!!this.props.radio.loading}
+        />
       </View>
     )
   }
@@ -99,6 +149,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     height: 40,
     paddingLeft: 20
+  },
+  removeBtn: {
+    backgroundColor: colors.danger,
+    marginBottom: 40
   }
 })
 
@@ -111,7 +165,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onRegister: radio => dispatch(register(radio)),
+    onCreate: radio => dispatch(create(radio)),
+    onUpdate: radio => dispatch(update(radio)),
+    onRemove: id => dispatch(remove(id)),
   }
 }
 

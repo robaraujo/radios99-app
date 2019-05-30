@@ -18,13 +18,14 @@ export const authenticate = user => {
           console.log(res)
           dispatch(success(res.data));
         })
-        .catch(err => {
-          console.log(err)
-          dispatch(failure(err));
-          dispatch(setMsg('Senha inválida. ' + err.error))
+        .catch(e => {
+          console.log(e)
+          console.log('teste1', e)
+          dispatch(failure(e));
+          dispatch(setMsg('Senha inválida. ' + e.error))
         });
     } catch (e) {
-      console.log(e)
+      console.log('teste2', e)
       dispatch(failure(e.message));
       dispatch(setMsg('Falha login'))
     }

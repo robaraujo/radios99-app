@@ -1,8 +1,11 @@
 import {
-  REGISTER_RADIO_BEGIN, REGISTER_RADIO_SUCCESS, REGISTER_RADIO_FAILURE,
+  CREATE_RADIO_BEGIN, CREATE_RADIO_SUCCESS, CREATE_RADIO_FAILURE,
   SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE,
   ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_STATE,
-  UPDATE_RADIO_ACTUAL, START_RADIO, GET_REGISTERED_RADIOS_BEGIN, GET_REGISTERED_RADIOS_SUCCESS, GET_REGISTERED_RADIOS_FAILURE
+  UPDATE_RADIO_ACTUAL, START_RADIO, GET_REGISTERED_RADIOS_BEGIN,
+  GET_REGISTERED_RADIOS_SUCCESS, GET_REGISTERED_RADIOS_FAILURE,
+  UPDATE_RADIO_BEGIN, UPDATE_RADIO_SUCCESS, UPDATE_RADIO_FAILURE,
+  REMOVE_RADIO_BEGIN, REMOVE_RADIO_SUCCESS, REMOVE_RADIO_FAILURE
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -31,18 +34,70 @@ const reducer = (state = initialState, action) => {
         }
       }
       return state;
-    case REGISTER_RADIO_BEGIN:
+    case CREATE_RADIO_BEGIN:
       return {
         ...state,
         loading: true,
         error: null
       };
-    case REGISTER_RADIO_SUCCESS:
+    case CREATE_RADIO_SUCCESS:
+      console.log('newState', {
+        ...state,
+        loading: false,
+        registered: state.registered.concat(action.payload)
+      })
       return {
         ...state,
-        loading: false
+        loading: false,
+        registered: state.registered.concat(action.payload)
       };
-    case REGISTER_RADIO_FAILURE:
+    case CREATE_RADIO_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case UPDATE_RADIO_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case UPDATE_RADIO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        registered: state.registered.map(radio => {
+          if (radio.id === action.payload.id) {
+            return action.payload;
+          }
+          return radio;
+        })
+      };
+    case UPDATE_RADIO_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    case REMOVE_RADIO_BEGIN:
+      return {
+        ...state,
+        loading: 'Apagando Rádio',
+        error: null
+      };
+    case REMOVE_RADIO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        registered: state.registered.filter(id => {
+          if (id !== action.payload.id) {
+            return false;
+          }
+          return true;
+        })
+      };
+    case REMOVE_RADIO_FAILURE:
       return {
         ...state,
         loading: false,

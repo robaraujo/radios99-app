@@ -6,31 +6,52 @@ import { colors } from '../Theme';
 
 class AppHeader extends Component
 {  
-
-  centerElem = () => {
-    if (this.props.title && this.props.subtitle) {
-      return <View>
-              <Text style={styles.title}>{this.props.title}</Text>
-              <Text style={styles.subtitle}>{this.props.subtitle}</Text>
-            </View>
-    }
-    if (this.props.title) {
-      return <Text style={styles.title}>{this.props.title}</Text>
-    }
-  }
-
   render() {
+
+    let rightElem = null;
+    let leftElem = null;
+    let centerElem = null;
+
+    // right elem
+    if (this.props.right !== false) {
+      rightElem = {
+        color: '#fff',
+        icon: 'menu',
+        underlayColor: colors.primaryLight,
+        onPress: ()=> this.props.navigation.toggleDrawer(),
+        ...(this.props.right || {})
+      };
+    }
+
+    // left elem
+    if (this.props.hasBack) {
+      leftElem = {
+        icon: 'chevron-left',
+        color: '#fff',
+        underlayColor: colors.primaryLight,
+        onPress: ()=> this.props.navigation.goBack(), 
+      }
+    }
+
+    // center elem
+    if (this.props.title && this.props.subtitle) {
+      centerElem = (
+          <View>
+            <Text style={styles.title}>{this.props.title}</Text>
+            <Text style={styles.subtitle}>{this.props.subtitle}</Text>
+          </View>
+      );
+    } else if (this.props.title) {
+      centerElem = <Text style={styles.title}>{this.props.title}</Text>
+    }
+
     return (
       <Header
         statusBarProps={{ translucent: true }}
         backgroundColor={colors.primary}
-        centerComponent={this.centerElem}
-        leftComponent={
-          this.props.hasBack ?
-            { icon: 'chevron-left', color: '#fff', onPress: ()=> this.props.navigation.goBack() }
-            : null
-        }
-        rightComponent={{ icon: 'menu', color: '#fff', onPress: ()=> this.props.navigation.toggleDrawer() }}
+        centerComponent={centerElem}
+        leftComponent={leftElem}
+        rightComponent={rightElem}
         containerStyle={styles.containerStyle}
       />
     )
@@ -42,12 +63,13 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: Platform.Version <= 20 ? { paddingTop: 0, height: 56 } : {},
     }),
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
+    zIndex: 999
   },
   title: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 12
   },
   subtitle: {
     color: '#fff',

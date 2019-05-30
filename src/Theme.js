@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const colors = {
   primary: '#d95d49',
+  primaryLight: '#d47262',
   secondary: '#32db64',
   light: '#f4f4f4',
   dark: '#222',
@@ -14,6 +15,7 @@ export const colors = {
 const appStyles = StyleSheet.create({
   
   buttomFooter: {
+    width: '100%',
     height: 50,
     padding: 10,
     backgroundColor: colors.primary

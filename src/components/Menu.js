@@ -66,35 +66,39 @@ class Menu extends Component {
   header = () => {
     // logged
     if (this.props.user.token) {
-      return <TouchableOpacity style={styles.header}>
+      return (
+        <View style={styles.header}>
+          <View>
+            <Icon name='user' size={20} color="#808080" />
+          </View>
+          <View>
+            <Text>
+              {this.props.user.name}
+            </Text>
+            <Text>
+              Clique aqui
+          </Text>
+          </View>
+        </View>
+      );
+    }
+
+    // not logged
+    return (
+      <View style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
         <View>
           <Icon name='user' size={20} color="#808080" />
         </View>
         <View>
           <Text>
-            {this.props.user.name}
+            Entre e cadastre sua rádio!
           </Text>
           <Text>
             Clique aqui
-        </Text>
+          </Text>
         </View>
-      </TouchableOpacity>
-    }
-
-    // not logged
-    return <TouchableOpacity style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
-      <View>
-        <Icon name='user' size={20} color="#808080" />
       </View>
-      <View>
-        <Text>
-          Entre e cadastre sua rádio!
-        </Text>
-        <Text>
-          Clique aqui
-        </Text>
-      </View>
-    </TouchableOpacity>
+    );
   }
 
   render() {
@@ -126,18 +130,21 @@ class Menu extends Component {
 }
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: '100%',
     height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     paddingTop: 20,
+
+    borderWidth: 2,
+    borderColor: 'blue'
   },
   header: {
     width: '100%',
     maxHeight: 50,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around'
+    borderWidth: 2,
+    borderColor: 'red'
   },
   menuItem: {
     flexDirection: 'row',

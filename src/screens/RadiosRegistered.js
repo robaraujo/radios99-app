@@ -14,16 +14,19 @@ class RadiosRegistered extends Component {
     this.props.onGetRegisteredRadios();
   }
 
-  componentDidUpdate = prevProps => {
-
+  
+  editRadio = radio => {
+    this.props.navigation.navigate('RadioRegister', {radio: radio});
   }
 
   // open register page
   register = () => this.props.navigation.navigate('RadioRegister');
 
   getRadioAddress = radio => {
-    if (radio.city && radio.state) return <Text>{radio.city} / {radio.state}</Text>;
-    if (!radio.city && radio.state) return <Text>{radio.state}</Text>;
+    let address = '';
+    if (radio.city && radio.state) address = `${radio.city} / ${radio.state}`;
+    if (!radio.city && radio.state) address = radio.state;
+    return <View><Text>{address}</Text></View>;
   }
   
   renderLogin = () => (
@@ -59,8 +62,10 @@ class RadiosRegistered extends Component {
           <View style={{ flex: 1 }}>
             {emptyRadios}
             {
-              this.props.radio.registered.map(radio => (
+              this.props.radio.registered.map((radio, i) => (
                 <ListItem
+                  key={i}
+                  onPress={()=> this.editRadio(radio)}
                   Component={TouchableScale}
                   friction={90}
                   tension={100}
@@ -69,15 +74,14 @@ class RadiosRegistered extends Component {
                   title={radio.name}
                   titleStyle={{ color: '#000', fontWeight: 'bold' }}
                   subtitleStyle={{ color: '#000' }}
-                  subtitle={()=> this.getRadioAddress(radio)}
-                  chevronColor="red"
-                  chevron
+                  subtitle={radio.city && radio.state ? `${radio.city} / ${radio.state}` : null}
+                  chevron={true}
                 />
               ))
             }
           </View>
           <TouchableOpacity onPress={this.register} style={appStyles.buttomFooter}>
-            <Text style={appStyles.buttomFooterText}>Registrar</Text>
+            <Text style={appStyles.buttomFooterText}>Cadastrar Rádio</Text>
           </TouchableOpacity>
         </View>
       </View>
