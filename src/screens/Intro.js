@@ -44,7 +44,7 @@ class Intro extends Component {
             </View>
           </View>
         </View>
-        <View style={[styles.slide, { backgroundColor: '#fa931d' }]}>
+        <View style={[styles.slide, { backgroundColor: '#a4b602' }]}>
           <View style={[styles.header, { width: windowsWidth }]}>
             <View>
               <Image style={styles.img10} source={require('../../assets/intro/1/c1.png')} />

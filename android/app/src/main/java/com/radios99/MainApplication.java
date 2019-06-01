@@ -3,6 +3,8 @@ package com.radios99;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.guichaguri.trackplayer.TrackPlayer;
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
+            new RNFirebaseMessagingPackage(),
             new ReanimatedPackage(),
             new VectorIconsPackage(),
             new TrackPlayer(),

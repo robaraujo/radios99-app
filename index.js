@@ -14,7 +14,8 @@ import Reactotron from 'reactotron-react-native';
 
 Reactotron.configure().useReactNative().connect();
 //axios.defaults.baseURL = 'http://3.88.181.58';
-axios.defaults.baseURL = 'http://localhost:3000';
+//axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://192.168.0.23:3000';
 
 const { store, persistor } = configureStore();
 

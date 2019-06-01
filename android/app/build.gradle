@@ -116,12 +116,7 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
-    buildTypes {
-        release {
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
+    
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -135,9 +130,29 @@ android {
             }
         }
     }
+
+    signingConfigs {
+        release {
+            storeFile file('radios99.keystore')
+            storePassword 'local421566'
+            keyAlias 'radios99'
+            keyPassword 'local421566'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
 dependencies {
+    implementation project(':react-native-firebase')
+    implementation "com.google.firebase:firebase-messaging:18.0.0"
+    implementation "com.google.android.gms:play-services-base:16.1.0"
+    implementation "com.google.firebase:firebase-core:16.0.9"
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
     implementation project(':react-native-reanimated')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-track-player')
@@ -155,3 +170,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.compile
     into 'libs'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -24,9 +24,9 @@ const RegisterSwitch = createSwitchNavigator({
 });
 
 const MenuNavigator = createDrawerNavigator({
+  Intro: Intro,
   Register: RegisterSwitch,
   Playlist: PlaylistSwitch,
-  Intro: Intro,
   Radio: Radio,
   Login: Login
 }, {
