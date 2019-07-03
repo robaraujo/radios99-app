@@ -1,39 +1,45 @@
 import {
-  CREATE_RADIO_BEGIN, CREATE_RADIO_SUCCESS, CREATE_RADIO_FAILURE,
-  SEARCH_RADIO_BEGIN, SEARCH_RADIO_SUCCESS, SEARCH_RADIO_FAILURE,
-  ADD_RADIO_LIST, REMOVE_RADIO_LIST, UPDATE_RADIO_STATE,
-  UPDATE_RADIO_ACTUAL, START_RADIO, GET_REGISTERED_RADIOS_BEGIN,
-  GET_REGISTERED_RADIOS_SUCCESS, GET_REGISTERED_RADIOS_FAILURE,
-  UPDATE_RADIO_BEGIN, UPDATE_RADIO_SUCCESS, UPDATE_RADIO_FAILURE,
-  REMOVE_RADIO_BEGIN, REMOVE_RADIO_SUCCESS, REMOVE_RADIO_FAILURE
-} from '../actions/actionTypes';
+  CREATE_RADIO_BEGIN,
+  CREATE_RADIO_SUCCESS,
+  CREATE_RADIO_FAILURE,
+  SEARCH_RADIO_BEGIN,
+  SEARCH_RADIO_SUCCESS,
+  SEARCH_RADIO_FAILURE,
+  ADD_RADIO_LIST,
+  REMOVE_RADIO_LIST,
+  UPDATE_RADIO_STATE,
+  UPDATE_RADIO_ACTUAL,
+  START_RADIO,
+  GET_REGISTERED_RADIOS_BEGIN,
+  GET_REGISTERED_RADIOS_SUCCESS,
+  GET_REGISTERED_RADIOS_FAILURE,
+  UPDATE_RADIO_BEGIN,
+  UPDATE_RADIO_SUCCESS,
+  UPDATE_RADIO_FAILURE,
+  REMOVE_RADIO_BEGIN,
+  REMOVE_RADIO_SUCCESS,
+  REMOVE_RADIO_FAILURE,
+  CLEAR_RADIO_LIST,
+  REORDER_RADIO_LIST
+} from "../actions/actionTypes";
 
 const initialState = {
-  firstScreen: '',       // first screen to open
-  loading: false,       // loading something
-  error: null,          // error from server
+  firstTime: true, // first time opening app
+  loading: false, // loading something
+  error: null, // error from server
   searchVisible: false, // if show search modal radio
-  searched: [],         // last search for radios
-  playbackState: null,  // state of player
-  list: [],             // user selected radios
-  actual: null,         // actual radio playing
-  actualIndex: null,    // actual index of playing radio based on list 
-  registered: []        // radios that user has registered
-}
+  searched: [], // last search for radios
+  playbackState: null, // state of player
+  list: [], // user selected radios
+  actual: null, // actual radio playing
+  actualIndex: null, // actual index of playing radio based on list
+  registered: [] // radios that user has registered
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case START_RADIO:
-      state.firstScreen = 'PlaylistRegister';
-      if (state.list.length) {
-        state.firstScreen = 'Radio';
-
-        if (!state.actual) {
-          state.actualIndex = 0;
-          state.actual = state.list[0];
-        }
-      }
-      return state;
+      return { ...state, firstTime: false };
     case CREATE_RADIO_BEGIN:
       return {
         ...state,
@@ -41,11 +47,6 @@ const reducer = (state = initialState, action) => {
         error: null
       };
     case CREATE_RADIO_SUCCESS:
-      console.log('newState', {
-        ...state,
-        loading: false,
-        registered: state.registered.concat(action.payload)
-      })
       return {
         ...state,
         loading: false,
@@ -83,7 +84,7 @@ const reducer = (state = initialState, action) => {
     case REMOVE_RADIO_BEGIN:
       return {
         ...state,
-        loading: 'Apagando Rádio',
+        loading: "Apagando Rádio",
         error: null
       };
     case REMOVE_RADIO_SUCCESS:
@@ -107,7 +108,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        error: null,
+        error: null
       };
     case SEARCH_RADIO_SUCCESS:
       return {
@@ -144,7 +145,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.filter(radio => {
-          return radio._id !== action.payload._id
+          return radio._id !== action.payload._id;
         })
       };
     case UPDATE_RADIO_ACTUAL:
@@ -172,9 +173,29 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.payload
       };
-    default:
-      return state
-  }
-}
+    case CLEAR_RADIO_LIST:
+      return {
+        ...state,
+        registered: []
+      };
+    case REORDER_RADIO_LIST:
+      // generate new radio list based on action.payload array order
+      let list = [];
+      let actualIndex = state.actualIndex;
 
-export default reducer
+      action.payload.forEach((order, i) => {
+        // reorder actual playing radio?
+        if (i != order && order == state.actualIndex) {
+          actualIndex = i + "";
+        }
+        // new radio list
+        list.push(state.list[order]);
+      });
+
+      return { ...state, list, actualIndex };
+    default:
+      return state;
+  }
+};
+
+export default reducer;

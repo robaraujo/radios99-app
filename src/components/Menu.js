@@ -1,129 +1,136 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, StyleSheet, Text, SafeAreaView, Anim } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  View,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity
+} from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Icon2 from "react-native-vector-icons/SimpleLineIcons";
 
-import { logout } from '../store/actions/user';
+import { logout } from "../store/actions/user";
+import appStyles, { colors } from "../Theme";
 
 class Menu extends Component {
   constructor() {
     super();
-    this.proileImage = 'https://aboutreact.com/wp-content/uploads/2018/07/sample_img.png';
+    this.proileImage =
+      "https://aboutreact.com/wp-content/uploads/2018/07/sample_img.png";
 
     this.items = [
       {
-        navOptionThumb: 'image',
-        navOptionName: 'Radio',
-        screenToNavigate: 'Radio',
-        separator: false,
-      }, {
-        navOptionThumb: 'image',
-        navOptionName: 'Playlist',
-        screenToNavigate: 'Playlist',
+        icon: <Icon name="play-circle" size={25} color={colors.primary} />,
+        navOptionName: "Radio",
+        screenToNavigate: "Radio",
         separator: false
-      }, {
-        navOptionThumb: 'image',
-        navOptionName: 'Cadastrar Rádio',
-        screenToNavigate: 'Register',
-        separator: false,
-        //params: { submenu: 1 }
-      }, {
-        navOptionThumb: 'image',
-        navOptionName: 'Sair',
-        screenToNavigate: 'Logout',
-        separator: true,
       },
+      {
+        icon: <Icon2 name="playlist" size={25} color={colors.primary} />,
+        navOptionName: "Playlist",
+        screenToNavigate: "Playlist",
+        separator: false
+      },
+      {
+        icon: <Icon name="plus" size={25} color={colors.primary} />,
+        navOptionName: "Cadastrar Rádio",
+        screenToNavigate: "Register",
+        separator: false
+      },
+      {
+        icon: <Icon name="sign-out" size={25} color={colors.primary} />,
+        navOptionName: "Sair",
+        screenToNavigate: "Logout",
+        separator: true
+      }
     ];
   }
 
   /**
    * Event menu item clicked
    */
-  itemClick = (item, key) => {
+  itemClick = (screenToNavigate, key) => {
     this.props.navigation.closeDrawer();
 
-    if (item.screenToNavigate === 'Logout') {
+    if (screenToNavigate === "Logout") {
       this.props.onLogout();
-      return this.props.navigation.navigate('Login');
+      return this.props.navigation.navigate("Login");
     }
-
-    global.currentScreenIndex = key;
-    this.props.navigation.navigate(item.screenToNavigate, item.params);
-  }
+    this.props.navigation.navigate(screenToNavigate);
+  };
 
   /**
    * Test if menu should be visible
    */
   showMenu(menu) {
-    const auth = ['Logout', 'FormRadio'];
-    return auth.indexOf(menu) !== -1 && !this.props.user.token ? false : true;
+    const auth = ["Logout", "FormRadio"].indexOf(menu) !== -1;
+    const noRadio = menu === "Radio" && !this.props.radio.list.length;
+    return (auth && !this.props.user.token) || noRadio ? false : true;
   }
+
+  itemSelected = menu => {
+    const state = this.props.navigation.state;
+    const selected = state.routes[state.index];
+    return selected.key === menu;
+  };
 
   /**
    * Render header different if user is logged
    */
   header = () => {
     // logged
-    if (this.props.user.token) {
-      return (
-        <View style={styles.header}>
-          <View>
-            <Icon name='user' size={20} color="#808080" />
-          </View>
-          <View>
-            <Text>
-              {this.props.user.name}
-            </Text>
-            <Text>
-              Clique aqui
-          </Text>
-          </View>
-        </View>
-      );
-    }
-
-    // not logged
-    return (
-      <View style={styles.header} onPress={() => this.props.navigation.navigate('Login')}>
-        <View>
-          <Icon name='user' size={20} color="#808080" />
-        </View>
-        <View>
-          <Text>
-            Entre e cadastre sua rádio!
-          </Text>
-          <Text>
-            Clique aqui
-          </Text>
-        </View>
+    return this.props.user.token ? (
+      <View>
+        <Text style={[styles.headerText, appStyles.bold]}>
+          {this.props.user.user.email}
+        </Text>
+        <Text style={styles.headerText}>Usuário autenticado</Text>
+      </View>
+    ) : (
+      <View>
+        <Text style={styles.headerText}>Entre e cadastre sua rádio!</Text>
+        <Text style={[styles.headerText, appStyles.bold]}>Clique aqui</Text>
       </View>
     );
-  }
+  };
 
   render() {
     let itemsMenu = this.items.map((item, key) => {
       if (this.showMenu(item.screenToNavigate)) {
-        return <TouchableOpacity
-          onPress={() => this.itemClick(item, key)}
-          key={key}
-          style={[styles.menuItem, { backgroundColor: global.currentScreenIndex === key ? '#e0dbdb' : '#ffffff' }]}>
-          <View style={{ marginRight: 10, marginLeft: 20 }}>
-            <Icon name={item.navOptionThumb} size={25} color="#808080" />
-          </View>
-          <Text style={{ fontSize: 15, color: global.currentScreenIndex === key ? 'red' : 'black' }}>
-            {item.navOptionName}
-          </Text>
-        </TouchableOpacity>
+        return (
+          <TouchableOpacity
+            onPress={() => this.itemClick(item.screenToNavigate, key)}
+            key={key}
+            style={[
+              styles.menuItem,
+              this.itemSelected(item.screenToNavigate)
+                ? styles.menuSelected
+                : null
+            ]}
+          >
+            <View style={{ marginRight: 10, marginLeft: 20 }}>{item.icon}</View>
+            <Text style={styles.menuItemText}>{item.navOptionName}</Text>
+          </TouchableOpacity>
+        );
       }
     });
 
     return (
       <SafeAreaView style={styles.container}>
-        {this.header()}
-        <View style={{ width: '100%' }}>
-          {itemsMenu}
+        <View style={styles.headerContainer}>
+          <TouchableOpacity
+            style={styles.header}
+            onPress={() => this.itemClick("Login", 5)}
+          >
+            <View style={styles.avatar}>
+              <Icon name="user" size={20} color="#fff" />
+            </View>
+            {this.header()}
+          </TouchableOpacity>
         </View>
+        {this.props.navigation.state.routeName}
+        <View style={{ width: "100%" }}>{itemsMenu}</View>
       </SafeAreaView>
     );
   }
@@ -131,39 +138,70 @@ class Menu extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    paddingTop: 20,
-
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#222",
+    alignItems: "center",
+    paddingTop: 20
+  },
+  avatar: {
     borderWidth: 2,
-    borderColor: 'blue'
+    borderColor: colors.primary,
+    width: 60,
+    height: 60,
+    borderRadius: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#fff",
+    marginLeft: 10,
+    marginRight: 10
+  },
+  headerContainer: {
+    width: "100%",
+    height: 90,
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: colors.primary,
+    marginBottom: 20,
+    paddingBottom: 10
   },
   header: {
-    width: '100%',
-    maxHeight: 50,
-    borderWidth: 2,
-    borderColor: 'red'
+    width: "100%",
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center"
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 10,
-    paddingBottom: 10
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15
+  },
+  menuSelected: {
+    backgroundColor: "#191919"
+  },
+  menuItemText: {
+    fontSize: 15,
+    color: "#fff"
+  },
+  headerText: {
+    color: "#fff"
   }
 });
 
-const mapStateToProps = ({ user }) => {
+const mapStateToProps = state => {
   return {
-    user: user
+    user: state.user,
+    radio: state.radio
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onLogout: () => dispatch(logout())
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Menu);
