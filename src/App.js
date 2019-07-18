@@ -41,19 +41,6 @@ class App extends Component {
 
     // Creates the player
     TrackPlayer.setupPlayer().then(async () => {
-      // Adds a track to the queue
-      let tracks = [];
-      this.props.radio.list.map((radio, i) => {
-        tracks.push({
-          id: i + "",
-          url: radio.streaming,
-          title: radio.name + "(99radios)",
-          artist: radio.name,
-          artwork: require("../assets/cover.png")
-        });
-      });
-      TrackPlayer.add(tracks);
-
       TrackPlayer.updateOptions({
         stopWithApp: true,
         capabilities: [
@@ -64,12 +51,29 @@ class App extends Component {
         ]
       });
 
-      if (!this.props.radio.actual && this.props.radio.list.length) {
-        this.props.onUpdateActual("0");
-      } else {
-        TrackPlayer.skip(this.props.radio.actualIndex);
-      }
+      this.addTracks();
     });
+  }
+
+  addTracks() {
+    // Adds a track to the queue
+    let tracks = [];
+    this.props.radio.list.map((radio, i) => {
+      tracks.push({
+        id: i + "",
+        url: radio.streaming,
+        title: radio.name + "(99radios)",
+        artist: radio.name,
+        artwork: require("../assets/cover.png")
+      });
+    });
+    TrackPlayer.add(tracks);
+
+    if (!this.props.radio.actual && this.props.radio.list.length) {
+      this.props.onUpdateActual("0");
+    } else {
+      TrackPlayer.skip(this.props.radio.actualIndex);
+    }
   }
 
   configPush() {

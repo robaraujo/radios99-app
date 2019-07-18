@@ -11,7 +11,9 @@ import { ListItem } from "react-native-elements";
 
 class RadiosRegistered extends Component {
   componentDidMount = () => {
-    this.props.onGetRegisteredRadios();
+    if (this.props.user.user) {
+      this.props.onGetRegisteredRadios();
+    }
   };
 
   editRadio = radio => {
@@ -41,7 +43,7 @@ class RadiosRegistered extends Component {
         </Text>
         <Button
           title="Entrar / Registrar"
-          buttonStyle={{ backgroundColor: colors.primary }}
+          buttonStyle={{ backgroundColor: colors.primary.main }}
           onPress={() => this.props.navigation.navigate("Login")}
         />
       </View>
@@ -54,7 +56,7 @@ class RadiosRegistered extends Component {
     // show message if has no message registered
     let emptyRadios = !this.props.radio.registered.length ? (
       <View style={styles.emptyRadios}>
-        <Text style={appStyles.centerMessage}>
+        <Text style={appStyles.centerMsg}>
           Nenhuma rádio<Text style={appStyles.bold}> cadastrada </Text>
           até o momento. Clique no botão abaixo para cadastrar.
         </Text>

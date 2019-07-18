@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { StyleSheet, View, Image, Dimensions } from "react-native";
-import TrackPlayer from "react-native-track-player";
 import LinearGradient from "react-native-linear-gradient";
-import { updateState, updateActual } from "../store/actions/radio";
+import { updateState } from "../store/actions/radio";
 
 import AppHeader from "../components/AppHeader";
 import RadioSocial from "../components/RadioSocial";
@@ -12,7 +11,7 @@ import RadioControllers from "../components/RadioControllers";
 
 class Radio extends Component {
   render() {
-    const { actual } = this.props.radio;
+    const { actual, playbackState } = this.props.radio;
 
     return (
       <LinearGradient
@@ -32,10 +31,10 @@ class Radio extends Component {
             />
           </View>
           <RadioVolume />
-          <RadioControllers />
+          <RadioControllers playbackState={playbackState} />
         </View>
         <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
-          <RadioSocial radio={actual} />
+          <RadioSocial {...radio} />
         </View>
       </LinearGradient>
     );

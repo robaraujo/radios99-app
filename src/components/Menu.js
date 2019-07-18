@@ -21,25 +21,25 @@ class Menu extends Component {
 
     this.items = [
       {
-        icon: <Icon name="play-circle" size={25} color={colors.primary} />,
+        icon: <Icon name="play-circle" size={25} color={colors.primary.main} />,
         navOptionName: "Radio",
         screenToNavigate: "Radio",
         separator: false
       },
       {
-        icon: <Icon2 name="playlist" size={25} color={colors.primary} />,
+        icon: <Icon2 name="playlist" size={25} color={colors.primary.main} />,
         navOptionName: "Playlist",
         screenToNavigate: "Playlist",
         separator: false
       },
       {
-        icon: <Icon name="plus" size={25} color={colors.primary} />,
+        icon: <Icon name="plus" size={25} color={colors.primary.main} />,
         navOptionName: "Cadastrar Rádio",
         screenToNavigate: "Register",
         separator: false
       },
       {
-        icon: <Icon name="sign-out" size={25} color={colors.primary} />,
+        icon: <Icon name="sign-out" size={25} color={colors.primary.main} />,
         navOptionName: "Sair",
         screenToNavigate: "Logout",
         separator: true
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     borderWidth: 2,
-    borderColor: colors.primary,
+    borderColor: colors.primary.main,
     width: 60,
     height: 60,
     borderRadius: 40,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     height: 90,
     alignItems: "center",
     borderBottomWidth: 1,
-    borderColor: colors.primary,
+    borderColor: colors.primary.main,
     marginBottom: 20,
     paddingBottom: 10
   },

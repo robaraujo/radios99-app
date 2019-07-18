@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import { updateState } from "../store/actions/radio";
 import Icon from "react-native-vector-icons/FontAwesome";
 import TrackPlayer from "react-native-track-player";
+import PropTypes from "prop-types";
 
 class RadioControllers extends Component {
   playPause = async () => {
     // prevent play before ready
-    if (!this.props.radio.playbackState) return;
+    if (!this.props.playbackState) return;
 
     if (!this.isPlaying()) {
       TrackPlayer.play();
@@ -26,7 +27,7 @@ class RadioControllers extends Component {
   };
 
   isPlaying = () => {
-    return this.props.radio.playbackState === TrackPlayer.STATE_PLAYING;
+    return this.props.playbackState === TrackPlayer.STATE_PLAYING;
   };
 
   render() {
@@ -85,19 +86,8 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ radio }) => {
-  return {
-    radio: radio
-  };
+RadioControllers.propTypes = {
+  playbackState: PropTypes.string
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    onUpdateState: playbackState => dispatch(updateState(playbackState))
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RadioControllers);
+export default RadioControllers;

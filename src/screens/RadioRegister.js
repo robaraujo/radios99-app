@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
   },
   imageBtn: {
     marginBottom: 10,
-    backgroundColor: colors.primary
+    backgroundColor: colors.primary.main
   },
   image: {
     width: win.width - 40,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   removeBtn: {
-    backgroundColor: colors.danger,
+    backgroundColor: colors.danger.main,
     marginBottom: 40
   }
 });

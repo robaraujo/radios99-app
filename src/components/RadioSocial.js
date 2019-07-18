@@ -1,8 +1,8 @@
-import React from "react";
+import React, { memo } from "react";
 import { TouchableOpacity, View, StyleSheet, Linking } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default props => {
+const RadioSocial = props => {
   const radio = props.radio || {};
   const whatsParam =
     "?text=Ol%C3%A1%2C%20venho%20da%2099radios.&phone=" + radio.whatsapp;
@@ -83,3 +83,12 @@ const styles = StyleSheet.create({
     alignItems: "center"
   }
 });
+
+RadioSocial.propTypes = {
+  facebook: PropTypes.string,
+  whatsapp: PropTypes.string,
+  instagram: PropTypes.string,
+  twitter: PropTypes.string
+};
+
+export default memo(RadioSocial);

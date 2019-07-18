@@ -1,8 +1,15 @@
-import React from 'react';
-import { StyleSheet, TouchableWithoutFeedback, Animated, ActivityIndicator, View, Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Animated,
+  ActivityIndicator,
+  View,
+  Dimensions
+} from "react-native";
+import PropTypes from "prop-types";
 
-export default class Component extends React.PureComponent {
+export default class Component extends PureComponent {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
@@ -16,17 +23,17 @@ export default class Component extends React.PureComponent {
     activityIndicatorColor: PropTypes.string,
     onPress: PropTypes.func.isRequired,
     customStyles: PropTypes.object,
-    zIndex: PropTypes.number,
+    zIndex: PropTypes.number
   };
 
   static defaultProps = {
-    title: 'Button',
-    titleColor: 'white',
-    backgroundColor: 'gray',
-    activityIndicatorColor: 'white',
+    title: "Button",
+    titleColor: "white",
+    backgroundColor: "gray",
+    activityIndicatorColor: "white",
     borderRadius: 0,
     zIndex: 1,
-    customStyles: {},
+    customStyles: {}
   };
 
   constructor(props) {
@@ -50,20 +57,34 @@ export default class Component extends React.PureComponent {
 
   showLoading(showLoading) {
     if (showLoading) {
-      this._loadingAnimation(this.props.width, this.props.height, this.props.borderRadius, this.props.height / 2, 1, 0);
+      this._loadingAnimation(
+        this.props.width,
+        this.props.height,
+        this.props.borderRadius,
+        this.props.height / 2,
+        1,
+        0
+      );
       this.setState({ showLoading: showLoading });
     } else {
       setTimeout(() => {
-        this._loadingAnimation(this.props.height, this.props.width, this.props.height / 2, this.props.borderRadius, 0, 1);
+        this._loadingAnimation(
+          this.props.height,
+          this.props.width,
+          this.props.height / 2,
+          this.props.borderRadius,
+          0,
+          1
+        );
         this.setState({ showLoading: showLoading });
       }, 1000);
     }
   }
 
   success() {
-    const scale = Dimensions.get('window').height / this.props.height;
+    const scale = Dimensions.get("window").height / this.props.height;
     this.loadingOverlay.scale.setValue(0);
-    
+
     // grow overlay
     Animated.timing(this.loadingOverlay.scale, {
       toValue: scale * 2,
@@ -74,16 +95,22 @@ export default class Component extends React.PureComponent {
     this.showLoading(false);
 
     // reset overlay after 1000s
-    setTimeout(()=> {
+    setTimeout(() => {
       Animated.timing(this.loadingOverlay.scale, {
         toValue: 0,
-        duration: 500,
+        duration: 500
       }).start();
     }, 1000);
-    
   }
 
-  _loadingAnimation(widthStart, widthEnd, borderRadiusStart, borderRadiusEnd, opacityStart, opacityEnd) {
+  _loadingAnimation(
+    widthStart,
+    widthEnd,
+    borderRadiusStart,
+    borderRadiusEnd,
+    opacityStart,
+    opacityEnd
+  ) {
     if (this.loadingValue.width._value !== widthEnd) {
       this.loadingValue.width.setValue(widthStart);
       this.loadingValue.opacity.setValue(opacityStart);
@@ -109,8 +136,9 @@ export default class Component extends React.PureComponent {
   render() {
     return (
       <View style={[styles.container, { zIndex: this.props.zIndex }]}>
-        <TouchableWithoutFeedback onPress={!this.state.showLoading ? this.props.onPress : null}>
-      
+        <TouchableWithoutFeedback
+          onPress={!this.state.showLoading ? this.props.onPress : null}
+        >
           <Animated.View
             style={[
               styles.containerButton,
@@ -123,7 +151,9 @@ export default class Component extends React.PureComponent {
               }
             ]}
           >
-            {this.state.showLoading ? this._renderIndicator() : this._renderTitle()}
+            {this.state.showLoading
+              ? this._renderIndicator()
+              : this._renderTitle()}
             <Animated.View
               style={[
                 styles.containerOverlay,
@@ -133,7 +163,7 @@ export default class Component extends React.PureComponent {
                   backgroundColor: this.props.backgroundColor,
                   borderWidth: this.props.borderWidth,
                   borderRadius: 1000,
-                  transform: [{scale: this.loadingOverlay.scale}]
+                  transform: [{ scale: this.loadingOverlay.scale }]
                 }
               ]}
             />
@@ -169,18 +199,18 @@ export default class Component extends React.PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 30
   },
   containerButton: {
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   buttonText: {
-    backgroundColor: 'transparent',
-    textAlign: 'center'
+    backgroundColor: "transparent",
+    textAlign: "center"
   },
   containerOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0
   }
