@@ -1,28 +1,27 @@
 import React, { memo } from "react";
 import { TouchableOpacity, View, StyleSheet, Linking } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import PropTypes from "prop-types";
 
 const RadioSocial = props => {
-  const radio = props.radio || {};
+  const { facebook, whatsapp, instagram, twitter } = props;
+
   const whatsParam =
-    "?text=Ol%C3%A1%2C%20venho%20da%2099radios.&phone=" + radio.whatsapp;
+    "?text=Ol%C3%A1%2C%20venho%20da%2099radios.&phone=" + whatsapp;
 
   const links = [
-    [
-      "fb://profile/" + radio.facebook,
-      "https://www.facebook.com/n/?" + radio.facebook
-    ],
+    ["fb://profile/" + facebook, "https://www.facebook.com/n/?" + facebook],
     [
       "whatsapp://send" + whatsParam,
       "https://api.whatsapp.com/send" + whatsParam
     ],
     [
-      "instagram://user?username=" + radio.instagram,
-      "https://instagram.com/_u/" + radio.instagram
+      "instagram://user?username=" + instagram,
+      "https://instagram.com/_u/" + instagram
     ],
     [
-      "twitter://user?screen_name=" + radio.twitter,
-      "https://www.twitter.com/" + radio.twitter
+      "twitter://user?screen_name=" + twitter,
+      "https://www.twitter.com/" + twitter
     ]
   ];
 
@@ -42,22 +41,22 @@ const RadioSocial = props => {
 
   return (
     <View style={styles.social}>
-      {!!radio.facebook && (
+      {!!facebook && (
         <TouchableOpacity onPress={() => open(0)} style={styles.socialItem}>
           <Icon name="facebook" size={24} color="#c54134" />
         </TouchableOpacity>
       )}
-      {!!radio.twitter && (
+      {!!twitter && (
         <TouchableOpacity onPress={() => open(3)} style={styles.socialItem}>
           <Icon name="twitter" size={24} color="#c54134" />
         </TouchableOpacity>
       )}
-      {!!radio.whatsapp && (
+      {!!whatsapp && (
         <TouchableOpacity onPress={() => open(1)} style={styles.socialItem}>
           <Icon name="whatsapp" size={24} color="#c54134" />
         </TouchableOpacity>
       )}
-      {!!radio.instagram && (
+      {!!instagram && (
         <TouchableOpacity onPress={() => open(2)} style={styles.socialItem}>
           <Icon name="instagram" size={24} color="#c54134" />
         </TouchableOpacity>

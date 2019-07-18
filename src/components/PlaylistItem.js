@@ -11,12 +11,13 @@ import {
   Dimensions
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import PropTypes from "prop-types";
 const window = Dimensions.get("window");
 
 import Typography from "./Typography";
 import { colors } from "../Theme";
 
-export default class PlaylistItem extends Component {
+class PlaylistItem extends Component {
   constructor(props) {
     super(props);
     this._active = new Animated.Value(0);
@@ -78,7 +79,7 @@ export default class PlaylistItem extends Component {
 
     return (
       <Animated.View style={style}>
-        <Typography color={color} variant="h6">
+        <Typography style={{ marginRight: 5 }} color={color} variant="h6">
           {index + 1}
         </Typography>
         <Image source={{ uri: data.logo }} style={styles.image} />
@@ -97,7 +98,7 @@ export default class PlaylistItem extends Component {
           name="remove"
           size={20}
           color="#dadada"
-          onPress={() => this.props.remove(data)}
+          onPress={() => this.props.onRemove(data)}
         />
       </Animated.View>
     );
@@ -147,3 +148,11 @@ const styles = StyleSheet.create({
     top: 30
   }
 });
+
+PlaylistItem.propTypes = {
+  onRemove: PropTypes.func,
+  onClick: PropTypes.func,
+  active: PropTypes.string
+};
+
+export default PlaylistItem;

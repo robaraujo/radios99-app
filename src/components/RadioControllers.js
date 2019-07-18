@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { TouchableOpacity, View, StyleSheet } from "react-native";
-import { connect } from "react-redux";
-import { updateState } from "../store/actions/radio";
 import Icon from "react-native-vector-icons/FontAwesome";
 import TrackPlayer from "react-native-track-player";
 import PropTypes from "prop-types";

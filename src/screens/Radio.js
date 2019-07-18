@@ -12,7 +12,7 @@ import RadioControllers from "../components/RadioControllers";
 class Radio extends Component {
   render() {
     const { actual, playbackState } = this.props.radio;
-
+    console.log(actual);
     return (
       <LinearGradient
         colors={["#dc634e", "#cc4532", "#c33f3d"]}
@@ -34,7 +34,7 @@ class Radio extends Component {
           <RadioControllers playbackState={playbackState} />
         </View>
         <View style={{ position: "absolute", bottom: 0, width: "100%" }}>
-          <RadioSocial {...radio} />
+          <RadioSocial {...actual} />
         </View>
       </LinearGradient>
     );
