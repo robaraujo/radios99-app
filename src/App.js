@@ -3,7 +3,6 @@ import { Alert } from "react-native";
 import { connect } from "react-redux";
 import TrackPlayer from "react-native-track-player";
 import axios from "axios";
-import firebase from "react-native-firebase";
 
 import Navigator from "./Navigator";
 import { setMsg } from "./store/actions/message";
@@ -15,7 +14,6 @@ class App extends Component {
 
   componentWillMount = () => {
     this.configRadio();
-    this.configPush();
     axios.defaults.headers.common["Authorization"] = `Bearer ${
       this.props.user.token
     }`;
@@ -74,19 +72,6 @@ class App extends Component {
     } else {
       TrackPlayer.skip(this.props.radio.actualIndex);
     }
-  }
-
-  configPush() {
-    firebase
-      .messaging()
-      .getToken()
-      .then(fcmToken => {
-        if (fcmToken) this.props.onRegisterPushToken(fcmToken);
-      });
-
-    firebase.messaging().onTokenRefresh(fcmToken => {
-      if (fcmToken) this.props.onRegisterPushToken(fcmToken);
-    });
   }
 
   componentDidUpdate = () => {

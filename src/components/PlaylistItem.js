@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
 PlaylistItem.propTypes = {
   onRemove: PropTypes.func,
   onClick: PropTypes.func,
-  active: PropTypes.string
+  active: PropTypes.bool
 };
 
 export default PlaylistItem;

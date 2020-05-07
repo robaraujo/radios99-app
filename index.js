@@ -1,4 +1,4 @@
-import React from "React";
+import React from "react";
 import { AppRegistry } from "react-native";
 import TrackPlayer from "react-native-track-player";
 
